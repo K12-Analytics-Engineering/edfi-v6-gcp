@@ -140,7 +140,7 @@ gcloud sql import sql edfi-ods-db gs://edfi-public-resources/edfi_minimal_tpdm_c
 gcloud sql databases create 'EdFi_Ods_2023' --instance=edfi-ods-db;
 ```
 ```sh
-gcloud sql import sql edfi-ods-db gs://edfi-public-resources/edfi_populated_tpdm_core_5.3.224.sql \
+gcloud sql import sql edfi-ods-db gs://edfi-public-resources/edfi_populated_tpdm_core_6.1.120.sql \
     --database 'EdFi_Ods_2023' \
     --user postgres;
 ```
