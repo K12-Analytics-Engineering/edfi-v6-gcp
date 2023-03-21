@@ -3,7 +3,8 @@
 # The Ed-Fi Alliance licenses this file to you under the Apache License, Version 2.0.
 # See the LICENSE and NOTICES files in the project root for more information.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+# Tag aspnet:6.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet@sha256:4e32cb869308e781e518f721b25bd26b3a91fb3e2100c6d29e72176f75417472
 LABEL maintainer="Ed-Fi Alliance, LLC and Contributors <techsupport@ed-fi.org>"
 
 ENV VERSION="3.1.0"
@@ -15,17 +16,19 @@ COPY appsettings.template.json /app/appsettings.template.json
 COPY run.sh /app/run.sh
 COPY log4net.config /app/log4net.txt
 
-RUN apk --no-cache add unzip=~6 dos2unix=~7 bash=~5 gettext=~0 postgresql13-client=~13 icu curl=~7 && \
+RUN apk --no-cache add unzip=~6 dos2unix=~7 bash=~5 gettext=~0 postgresql13-client=~13 jq=~1 icu curl=~7 && \
     wget -O /app/AdminApp.zip  https://pkgs.dev.azure.com/ed-fi-alliance/Ed-Fi-Alliance-OSS/_apis/packaging/feeds/EdFi/nuget/packages/EdFi.Suite3.ODS.AdminApp.Web/versions/${VERSION}/content && \
-    unzip /app/AdminApp.zip -d /app && \
+    unzip /app/AdminApp.zip AdminApp/* -d /app/ && \
+    cp -r /app/AdminApp/. /app/ && \
     rm -f /app/AdminApp.zip && \
+    rm -r /app/AdminApp && \
     cp /app/log4net.txt /app/log4net.config && \
     dos2unix /app/*.json && \
     dos2unix /app/*.sh && \
     dos2unix /app/log4net.config && \
-    chmod 700 /app/*.sh ** && \
+    chmod 700 /app/*.sh -- ** && \
     rm -f /app/*.exe
- 
+
 EXPOSE "80"
 
 ENTRYPOINT exec /app/run.sh
