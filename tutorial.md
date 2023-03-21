@@ -268,7 +268,7 @@ gcloud beta run deploy edfi-admin-app \
     --min-instances 0 \
     --max-instances 1 \
     --allow-unauthenticated \
-    --update-env-vars PROJECT_ID=<walkthrough-project-id/>,API_URL=$(gcloud beta run services describe edfi-api --region us-central1 --format="get(status.url)") \
+    --update-env-vars DB_HOST=<walkthrough-project-id/>:us-central1:edfi-ods-db,PROJECT_ID=<walkthrough-project-id/>,API_URL=$(gcloud beta run services describe edfi-api --region us-central1 --format="get(status.url)") \
     --set-secrets=DB_PASS=ods-password:1,ENCRYPTION_KEY=admin-app-encryption-key:1 \
     --service-account edfi-cloud-run@<walkthrough-project-id/>.iam.gserviceaccount.com \
     --platform managed;
